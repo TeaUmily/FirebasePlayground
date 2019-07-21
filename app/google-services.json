@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "219415735123",
+    "firebase_url": "https://fir-playground-16a11.firebaseio.com",
+    "project_id": "fir-playground-16a11",
+    "storage_bucket": "fir-playground-16a11.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:219415735123:android:66beb22fa5c88ac9",
+        "android_client_info": {
+          "package_name": "ada.osc.firebaseplayground"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "219415735123-8jt4j5lglbsemkfbse6hjn0b7kuo1d8u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCk7CxwFxkLG3SyI9tTLVQH7J-iiynkGh4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "219415735123-8jt4j5lglbsemkfbse6hjn0b7kuo1d8u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
