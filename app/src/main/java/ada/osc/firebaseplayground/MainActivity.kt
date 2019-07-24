@@ -4,25 +4,26 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class MainActivity : AppCompatActivity() {
 
     private val database = FirebaseDatabase.getInstance()
 
-    private lateinit var viewModel: MainViewModel
+   private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        viewModel = getViewModel <MainViewModel>()
 
+        viewModel.getStatisticByDays()
 
         parkBtn.setOnClickListener {
             viewModel.firstPicked("park")
@@ -59,50 +60,26 @@ class MainActivity : AppCompatActivity() {
         data.let {
             if (data.firstAnswer != "" && data.secondAnswer != "" && data.thirdAnswer != ""){
                 when(data.firstAnswer){
-                    "park" -> increaseValue("park", "question_one")
-                    "castle" -> increaseValue("castle", "question_one")
-                    "other content" -> increaseValue("extra_content", "question_one")
+                    "park" -> viewModel.updateData("park", "question_one")
+                    "castle" -> viewModel.updateData("castle", "question_one")
+                    "other content" -> viewModel.updateData("extra_content", "question_one")
                 }
 
                 when(data.secondAnswer){
-                    "recommendation" -> increaseValue("recommendation","question_two")
-                    "online media" -> increaseValue("online_media", "question_two")
-                    "other media" -> increaseValue("other_media", "question_two")
+                    "recommendation" -> viewModel.updateData("recommendation","question_two")
+                    "online media" -> viewModel.updateData("online_media", "question_two")
+                    "other media" ->viewModel.updateData("other_media", "question_two")
                 }
 
                 when(data.thirdAnswer){
-                    "happy" -> increaseValue("satisfied","third_question")
-                    "sad" -> increaseValue("dissatisfied","third_question")
+                    "happy" -> viewModel.updateData("satisfied","third_question")
+                    "sad" -> viewModel.updateData("dissatisfied","third_question")
                 }
             }
         }
         })
     }
 
-    private fun increaseValue(answer: String, question: String) {
 
-        val listener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val day = dayInput.text
-                val month = monthInput.text
-                val year = 2019
-
-                val dataYear = dataSnapshot.child("year/$year/month/$month/$question/$answer").value
-                database.getReference("year/$year/$question/$answer").setValue(dataYear.hashCode()+1)
-
-                val dataMonth = dataSnapshot.child("year/$year/month/$month/$question/$answer").value
-                database.getReference("year/$year/month/$month/$question/$answer").setValue(dataMonth.hashCode()+1)
-
-                val dataDay = dataSnapshot.child("year/$year/month/$month/day/$day/$question/$answer").value
-                database.getReference("year/$year/month/$month/day/$day/$question/$answer").setValue(dataDay.hashCode()+1)
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.w("AAA", "loadPost:onCancelled", databaseError.toException())
-            }
-        }
-        database.reference.addListenerForSingleValueEvent(listener)
-
-    }
 
 }
